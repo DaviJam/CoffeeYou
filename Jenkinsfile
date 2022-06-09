@@ -4,19 +4,25 @@ node {
     }
 
     stage('Compile') {
-        sh 'mvn clean compile'
+        withMaven(){
+            sh 'mvn clean compile'
+        }
     }
 
     stage('Test') {
         try {
-            sh 'mvn test'
+            withMaven(){
+                sh 'mvn test'
+            }
         } finally {
             step([$class: 'JUnitResultArchiver', testResults: '**/target/site/jacoco/*.xml'])
         }
     }
 
     stage('Docs') {
-        sh 'mvn javadoc:javadoc'
+        withMaven(){
+            sh 'mvn javadoc:javadoc'
+        }
     }
 }
 

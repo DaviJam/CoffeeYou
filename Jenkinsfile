@@ -4,14 +4,14 @@ node {
     }
 
     stage('Compile') {
-        withMaven(){
+        withMaven(maven: 'maven3'){
             sh 'mvn clean compile'
         }
     }
 
     stage('Test') {
         try {
-            withMaven(){
+            withMaven(maven: 'maven3'){
                 sh 'mvn test'
             }
         } finally {
@@ -20,7 +20,7 @@ node {
     }
 
     stage('Docs') {
-        withMaven(){
+        withMaven(maven: 'maven3'){
             sh 'mvn javadoc:javadoc'
         }
     }

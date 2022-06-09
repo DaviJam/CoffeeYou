@@ -1,20 +1,20 @@
 node {
     stage('SCM') {
-        steps {
+        step {
           checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/DaviJam/CoffeeYou.git']]])
         }
         agent any
     }
 
     stage('Compile') {
-        steps {
+        step {
           sh 'mvn clean compile'
         }
         agent any
     }
 
     stage('Test') {
-        steps {
+        step {
             try {
                 sh 'mvn test'
             } finally {
@@ -25,7 +25,7 @@ node {
     }
 
     stage('Docs') {
-        steps {
+        step {
           sh 'mvn javadoc:javadoc'
         }
 

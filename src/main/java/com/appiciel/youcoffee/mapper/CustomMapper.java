@@ -9,8 +9,17 @@ import lombok.NoArgsConstructor;
 import java.util.stream.Collectors;
 
 
+/**
+ * The type Custom mapper.
+ */
 public class CustomMapper {
 
+    /**
+     * Coffee dto to coffee coffee.
+     *
+     * @param coffeeDTO the coffee dto
+     * @return the coffee
+     */
     static public Coffee coffeeDTOToCoffee(CoffeeDTO coffeeDTO) {
         Coffee coffee = new Coffee(
                 null,
@@ -22,6 +31,12 @@ public class CustomMapper {
     return coffee;
     };
 
+    /**
+     * Coffee to coffee dto coffee dto.
+     *
+     * @param coffee the coffee
+     * @return the coffee dto
+     */
     static public CoffeeDTO coffeeToCoffeeDTO(Coffee coffee) {
         CoffeeDTO coffeeDTO = new CoffeeDTO(
                 coffee.getName(),
@@ -32,6 +47,12 @@ public class CustomMapper {
         return coffeeDTO;
     }
 
+    /**
+     * Grain dto to grain grain.
+     *
+     * @param grainDTO the grain dto
+     * @return the grain
+     */
     static public Grain grainDTOToGrain(GrainDTO grainDTO){
         Grain grain = new Grain(
                 null,
@@ -43,6 +64,12 @@ public class CustomMapper {
         return grain;
     }
 
+    /**
+     * Grain to grain dto grain dto.
+     *
+     * @param grain the grain
+     * @return the grain dto
+     */
     static public GrainDTO grainToGrainDTO(Grain grain){
         GrainDTO grainDTO = new GrainDTO(
                 grain.getName(),
@@ -53,6 +80,13 @@ public class CustomMapper {
         return grainDTO;
     }
 
+    /**
+     * Updated grain dto to grain grain.
+     *
+     * @param grainDTO the grain dto
+     * @param grain    the grain
+     * @return the grain
+     */
     static public Grain updatedGrainDTOToGrain(GrainDTO grainDTO, Grain grain){
         grain.setOrigin(grainDTO.getOrigin());
         grain.setPrice(grainDTO.getPrice());
@@ -60,6 +94,13 @@ public class CustomMapper {
         return grain;
     }
 
+    /**
+     * Updated coffee dto to coffee coffee.
+     *
+     * @param entity the entity
+     * @param coffee the coffee
+     * @return the coffee
+     */
     static public Coffee updatedCoffeeDTOToCoffee(CoffeeDTO entity, Coffee coffee) {
         coffee.setPrice(entity.getPrice());
         coffee.setGrains(entity.getGrains().stream().map(grainDTO -> CustomMapper.grainDTOToGrain(grainDTO)).collect(Collectors.toList()));

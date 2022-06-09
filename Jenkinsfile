@@ -5,7 +5,7 @@ pipeline {
     {
         stage('SCM')
         {
-            step
+            steps
             {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/DaviJam/CoffeeYou.git']]])
             }
@@ -13,7 +13,7 @@ pipeline {
 
         stage('Compile')
         {
-            step
+            steps
             {
                 sh 'mvn clean compile'
             }
@@ -22,7 +22,7 @@ pipeline {
         stage('Test')
         {
             try {
-                    step
+                    steps
                     {
                         sh 'mvn test'
                     }
@@ -32,7 +32,7 @@ pipeline {
         }
 
         stage('Docs') {
-            step{
+            steps{
                 sh 'mvn javadoc:javadoc'
             }
         }

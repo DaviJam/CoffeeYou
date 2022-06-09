@@ -21,13 +21,19 @@ pipeline {
 
         stage('Test')
         {
-            try {
-                    steps
+            steps
+            {
+                script
+                {
+                    try
                     {
                         sh 'mvn test'
                     }
-            } finally {
-                step([$class: 'JUnitResultArchiver', testResults: '**/target/site/jacoco/*.xml'])
+                    finally
+                    {
+                        step([$class: 'JUnitResultArchiver', testResults: '**/target/site/jacoco/*.xml'])
+                    }
+                }
             }
         }
 

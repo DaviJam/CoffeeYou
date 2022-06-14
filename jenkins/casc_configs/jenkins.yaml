@@ -1,0 +1,43 @@
+tool:
+  git:
+    installations:
+      - name: git
+        home: /usr/bin/git
+  maven:
+    installations:
+      - name: maven
+        home: /usr/bin/mvn
+  docker:
+    installations:
+      - name: docker
+        home: /usr/bin/docker
+  terraform:
+    installations:
+      - name: terraform
+        home: /usr/local/bin/terraform
+  jdk:
+    installations:
+      - name: jdk
+        home: /opt/java/openjdk/bin/java
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: "jenkins-docker-access"
+              username: "dada971"
+              password: "${PRIVATE_PASSWORD}"
+              description: "Username/Password Credentials for docker hub"
+#          - string:
+#              scope: GLOBAL
+#              id: "secret-text"
+#              secret: "${SECRET_TEXT}"
+#              description: "Secret Text"
+#          - aws:
+#              scope: GLOBAL
+#              id: "AWS"
+#              accessKey: "${AWS_ACCESS_KEY}"
+#              secretKey: "${AWS_SECRET_ACCESS_KEY}"
+#              description: "AWS Credentials"

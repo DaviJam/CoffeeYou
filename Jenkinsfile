@@ -27,6 +27,12 @@ pipeline {
             post {
                success {
                     junit '**/target/surefire-reports/*.xml'
+                    step([$class: 'JacocoPublisher',
+                        execPattern: 'target/*.exec',
+                        classPattern: 'target/classes',
+                        sourcePattern: 'src/main/java',
+                        exclusionPattern: 'src/test*'
+                    ])
                }
                failure {
                    mail bcc: '', body: '''Please check this job : ${JOB_URL}
@@ -48,20 +54,25 @@ pipeline {
             steps{
                 // login to docker hub
                 sh('docker login --username $DOCKER_ACCESS_USR --password $DOCKER_ACCESS_PSW')
-                sh('echo $BUILD_NUMBER')
                 // build image
-                sh('docker build --tag you-coffee:v$BUILD_NUMBER .')
+                sh('docker build --tag you-coffee:latest .')
                 // tag image in order to push to registry
-                sh('docker tag you-coffee:v$BUILD_NUMBER dada971/you-coffee')
+                sh('docker tag you-coffee:latest dada971/you-coffee:v$BUILD_NUMBER')
                 // push to hub
-                sh('docker push dada971/you-coffee')
+                sh('docker push dada971/you-coffee:v$BUILD_NUMBER')
             }
         }
 
 
         stage('Save to Nexus Repository') {
+
             steps {
-                sh('mvn clean deploy')
+             configFileProvider([configFile(fileId: 'nexus-repository', variable: 'MAVEN_SETTINGS')]) {
+
+                    sh('echo $MAVEN_SETTINGS')
+                    sh('mvn -s $MAVEN_SETTINGS clean deploy')
+                }
+//                 sh('mvn clean deploy -s settings.xml')
             }
         }
 

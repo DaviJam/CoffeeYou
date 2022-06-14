@@ -133,7 +133,7 @@ USER root
 RUN apt-get update && apt-get install -y lsb-release
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc https://download.docker.com/linux/debian/gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.asc] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
-RUN apt-get update && apt-get install -y software-properties-common unzip wget maven docker-ce-cli
+RUN apt-get update && apt-get install -y software-properties-common unzip wget maven docker-ce-cli ansible
 
 # Install Terraform
 ARG TERRAFORM_VERSION=1.2.2
@@ -149,6 +149,7 @@ RUN \
 USER jenkins
 
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.3 docker-workflow:1.28"
+RUN jenkins-plugin-cli --plugins "configuration-as-code:1429.v09b_044a_c93de"
 ```
 
 
@@ -174,6 +175,7 @@ docker run \
   --env DOCKER_TLS_VERIFY=1 \
   --publish 8099:8080 \
   --publish 50000:50000 \
+  --volume casc_configs/jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml \
   --volume jenkins-data:/var/jenkins_home \
   --volume jenkins-docker-certs:/certs/client:ro \
   jenkins_mvn_docker_terraform:latest
@@ -306,7 +308,7 @@ pipeline {
         
         stage('Deploy to docker registry') {
              environment {
-                DOCKER_ACCESS = credentials('jenkins-docker-access')
+                DOCKER_ACCESS = credentials('secrets.properties')
             }
             steps{
                 // login to docker hub
